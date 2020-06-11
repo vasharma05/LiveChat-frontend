@@ -1,3 +1,12 @@
+# Initial Setup
+
+### `npm install`
+
+Then Run 
+
+### `npm start` 
+along with the django's server ready alongside
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

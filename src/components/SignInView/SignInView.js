@@ -27,9 +27,6 @@ export class SignInView extends Component {
         })
     }
     render() {
-        if(this.props.signinData){
-            this.props.history.push('/')
-        }
         return (
             <div className='parent'>
                     <Row className='header'>
