@@ -8,9 +8,7 @@ function* login(request){
     const {payload} = request
     yield put({ type: 'USER_AUTH_START' })
     try {
-        console.log('check1')
         const response = yield call(api.login, payload)
-        console.log('check2')
         const checkResponse = checkAPIfailure(response)
         console.log('-----------------------------', response)
         console.log('-----------------------------', checkResponse)
@@ -24,10 +22,29 @@ function* login(request){
     }
 }
 
+function* signup(request){
+    const {payload} = request
+    yield put({ type: 'USER_AUTH_START' })
+    try {
+        const response = yield call(api.signup, payload)
+        const checkResponse = checkAPIfailure(response)
+        console.log('-----------------------------', response)
+        console.log('-----------------------------', checkResponse)
+        if(response.status === 203){
+            yield put({type: 'USER_AUTH_ERROR', error: checkResponse.error})
+        }else if(response.status === 201){
+            yield put({type: 'USER_AUTH_SUCCESS', payload: checkResponse})
+        }
+    }catch(error){
+        console.error(error)
+    }
+}
+
 function* authSaga(){
-    return(
-        yield takeEvery('PUSH_LOGIN', login)
-    )
+    return [
+        yield takeEvery('PUSH_LOGIN', login),
+        yield takeEvery('PUSH_SIGNUP', signup)
+    ]
 }
 
 export default authSaga

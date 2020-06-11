@@ -4,3 +4,8 @@ export const login = (payload) => ({
     type: types.PUSH_LOGIN,
     payload
 })
+
+export const signup = (payload) => ({
+    type: types.PUSH_SIGNUP,
+    payload
+})

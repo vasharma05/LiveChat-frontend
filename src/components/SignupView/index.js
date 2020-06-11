@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import {Row, Col} from 'react-bootstrap'
-import { FormControl, TextField, Input, InputLabel, Button } from '@material-ui/core'
+import { FormControl, TextField, Input, InputLabel, Button, CircularProgress } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-
-
+import { connect } from 'react-redux'
+import * as actions from '../../redux/actions'
 
 export class SignupView extends Component {
     constructor(){
@@ -41,6 +41,7 @@ export class SignupView extends Component {
     handleSubmit(e){
         e.preventDefault()
         console.log(this.state)
+        this.props.signup(this.state)
     }
     render() {
         return (
@@ -52,9 +53,10 @@ export class SignupView extends Component {
                 </Row>
                 <Row className='mt-5'>
                     <Col className='col-md-6 offset-md-3 box p-3'>
-                        <form onSubmit={this.handleSubmit}>
+                    {this.props.authError ? <span style={{color: 'red'}}>{this.props.authError}</span>: null}
+                        <form className='mt-4' onSubmit={this.handleSubmit}>
                             <h1>Sign Up</h1>
-                            <Row className='mt-3'>
+                            <Row className='mt-4'>
                                 <Col>
                                     <FormControl fullWidth>
                                         <TextField
@@ -112,7 +114,6 @@ export class SignupView extends Component {
                                             onChange={this.handleChange}
                                             name='profile_pic'
                                             color='primary'
-                                            required
                                         />
                                     </FormControl>
                                 </Col>
@@ -199,7 +200,8 @@ export class SignupView extends Component {
                             </Row>
                             <Row className='mt-4'>
                                 <Col>
-                                    <Button type='submit' variant='contained' color='primary' disabled={this.state.passwordMismatch} >Sign Up</Button>
+                                {this.props.authLoading ? <CircularProgress color='primary' /> : <Button className='mt-4' type='submit' variant='contained' color='primary' disabled={this.state.passwordMismatch}>Sign Up</Button>}
+
                                 </Col>
                             </Row>
                         </form>
@@ -215,5 +217,12 @@ export class SignupView extends Component {
     }
 }
 
-
-export default SignupView
+const mapStateToProps = (state) => ({
+    authError: state.auth.authError,
+    signinData : state.auth.signinData,
+    authLoading : state.auth.authLoading
+})
+const mapDispatchToProps = (dispatch)=>({
+    signup : (payload) => dispatch(actions.signup(payload))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(SignupView)
