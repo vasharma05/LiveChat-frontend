@@ -1,11 +1,17 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import SignInView from './components/SignInView/SignInView'
+import SignupView from './components/SignupView'
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Jai Bajrang Bali</h1>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path='/signin' component={SignInView} />
+        <Route exact path='/signup' component={SignupView} />
+      </Switch>
+    </Router>
   );
 }
 
