@@ -2,7 +2,8 @@ const initState = {
     authError: null,
     authLoading: false,
     signinData: null,
-    userDetails: null
+    userDetails: null, 
+    networkError : false
 }
 
 const updateObject = (state, newState) => ({
@@ -12,7 +13,8 @@ const updateObject = (state, newState) => ({
 
 const userAuthStart = (state, action) => 
     updateObject(state, {
-        authLoading:true
+        authLoading:true,
+        networkError: false
     })
 
 const userAuthError = (state, action) => 
@@ -29,14 +31,30 @@ const userAuthSuccess = (state, action) =>
         authError: null
     })
 
+
+const networkError = (state, action) => 
+    updateObject(state, {
+        networkError: true,
+        authLoading: false
+    })
+
+const retryConnection = (state, action) => 
+    updateObject(state, {
+        networkError : false
+    })
+
 const authReducer = (state=initState, action) => {
     switch(action.type){
+        case 'RETRY_CONNECT':
+            return retryConnection(state, action)
         case 'USER_AUTH_START':
             return userAuthStart(state, action)
         case 'USER_AUTH_ERROR':
             return userAuthError(state, action)
         case 'USER_AUTH_SUCCESS':
             return userAuthSuccess(state, action)
+        case 'NETWORK_ERROR':
+            return networkError(state, action)
         default: 
             return state
     }

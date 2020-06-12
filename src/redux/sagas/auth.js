@@ -19,6 +19,7 @@ function* login(request){
         }
     }catch(error){
         console.error(error)
+        yield put({type: 'NETWORK_ERROR'})
     }
 }
 
@@ -37,6 +38,7 @@ function* signup(request){
         }
     }catch(error){
         console.error(error)
+        yield put({type: 'NETWORK_ERROR'})
     }
 }
 

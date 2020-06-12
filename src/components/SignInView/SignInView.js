@@ -66,7 +66,7 @@ export class SignInView extends Component {
                                                         variant='Outlined'
                                                     />
                                                 </FormControl>
-                                                {this.props.authLoading ? <CircularProgress color='primary' /> : <Button className='mt-4' type='submit' variant='contained' color='primary'>Submit</Button>}
+                                                {this.props.authLoading ? <CircularProgress className='mt-4' color='primary' /> : <Button className='mt-4' type='submit' variant='contained' color='primary'>Submit</Button>}
                                             </form>
                                             <Row>
                                                 <Col className='mt-2'>

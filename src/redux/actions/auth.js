@@ -9,3 +9,7 @@ export const signup = (payload) => ({
     type: types.PUSH_SIGNUP,
     payload
 })
+
+export const retryConnection = () => ({
+    type: types.RETRY_CONNECT
+})
