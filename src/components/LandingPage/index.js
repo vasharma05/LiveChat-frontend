@@ -9,9 +9,9 @@ export class LandingPage extends Component {
     constructor(props){
         super()
         this.state = {
-            chatbotName: '',
-            headerBackgroundColor: '#cccccc',
-            headerTextColor: '#000000',
+            chatbotName: 'Chatbot',
+            headerBackgroundColor: '#343a40',
+            headerTextColor: '#ffffff',
             introductoryText: '',
             introductionBackgroundColor: '#ffffff',
             introductionTextColor : '#000000',
