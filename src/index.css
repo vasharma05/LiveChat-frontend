@@ -108,3 +108,14 @@ code {
 .pointer{
   cursor: pointer;
 }
+.received-text{
+  justify-content: flex-start;
+}
+.sent-text{
+  justify-content: flex-end;
+}
+.received-text div, .sent-text div{
+  text-align: justify;
+  max-width: 60%;
+  border-radius: 4px;
+}

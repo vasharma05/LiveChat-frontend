@@ -12,7 +12,7 @@ export class LandingPage extends Component {
             chatbotName: 'Chatbot',
             headerBackgroundColor: '#343a40',
             headerTextColor: '#ffffff',
-            introductoryText: '',
+            introductionText: 'Introduction Text',
             introductionBackgroundColor: '#ffffff',
             introductionTextColor : '#000000',
             receiverBackground: '#eeeeee',
@@ -190,7 +190,7 @@ export class LandingPage extends Component {
                                     </FormControl>
                                 </Col>
                             </Row>
-                            <Row className='py-2 center-row-between mt-2'>
+                            {/* <Row className='py-2 center-row-between mt-2'>
                                 <Col className='float col-2'>
                                     <FormControl fullWidth>
                                         <label htmlFor='bot_picture' className='center-col-center small text-center'>
@@ -255,7 +255,7 @@ export class LandingPage extends Component {
                                         />
                                     </FormControl>
                                 </Col>
-                            </Row>
+                            </Row> */}
                         </form>
                     </Col>
                     <Col className='col-4'>
