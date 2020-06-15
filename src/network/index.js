@@ -1,4 +1,5 @@
 import Api from './apiConfig'
 
-export const login = (payload) => Api.post('accounts/login/', payload)
-export const signup = (payload) => Api.post('accounts/signup/', payload)
+export const login = (payload) => Api.post('accounts/api/login/', payload)
+export const signup = (payload) => Api.post('accounts/api/signup/', payload)
+export const getChatbotDetails = (token) => Api.getWithToken('chatbot/api/', token)

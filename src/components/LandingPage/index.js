@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { TextField, FormControl } from '@material-ui/core'
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+// import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Chatbox from './Chatbox'
+import * as actions from '../../redux/actions'
 
 export class LandingPage extends Component {
     constructor(props){
@@ -26,6 +27,9 @@ export class LandingPage extends Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+    }
+    componentDidMount(){
+        this.props.getChatbotDetails()
     }
     handleChange(e){
         const {name, value} = e.target;
@@ -267,4 +271,11 @@ export class LandingPage extends Component {
     }
 }
 
-export default connect()(LandingPage)
+const mapStateToProps = (state) => ({
+    styles: state.chatbot.chatbotDetails
+})
+const mapDispatchToProps = (dispatch) => ({
+    getChatbotDetails : () => dispatch(actions.getChatbotDetails())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage)
