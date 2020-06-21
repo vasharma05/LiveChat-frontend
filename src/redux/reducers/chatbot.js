@@ -18,12 +18,16 @@ const setChatbotDetails = (state, action) =>
 
 const setChatbotMessage = (state,action) => 
     updateObject(state, {
-        message: action.payload,
+        message: action.message,
         chatbotDetails: null
     })
 
 function chatbotReducer(state=initState, action){
     switch(action.type){
+        case types.GET_CHATBOT_DETAILS:
+            return updateObject(state, {
+                chatbotDetails:null
+            })
         case types.SET_CHATBOT_DETAILS:
             return setChatbotDetails(state, action)
         case types.SET_CHATBOT_MESSAGE:

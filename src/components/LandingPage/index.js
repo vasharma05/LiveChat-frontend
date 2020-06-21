@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { TextField, FormControl } from '@material-ui/core'
-// import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { TextField, FormControl, Button } from '@material-ui/core'
 import Chatbox from './Chatbox'
 import * as actions from '../../redux/actions'
 
 export class LandingPage extends Component {
     constructor(props){
-        super()
+        super(props)
         this.state = {
-            chatbotName: 'Chatbot',
-            headerBackgroundColor: '#343a40',
-            headerTextColor: '#ffffff',
+            chatbotName:  'Chatbot',
+            headerBackgroundColor:  '#343a40',
+            headerTextColor:  '#ffffff',
             introductionText: 'Introduction Text',
             introductionBackgroundColor: '#ffffff',
             introductionTextColor : '#000000',
@@ -20,16 +19,26 @@ export class LandingPage extends Component {
             senderBackground: '#eeeeee',
             receiverTextColor: '#000000',
             senderTextColor: '#000000',
-            'bot_picture' : '',
+            'bot_picture' : null,
             'background_picture': '',
             inputBarBackground: '',
-            inputTextColor: ''
+            inputTextColor: '',
+            loading: true
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount(){
         this.props.getChatbotDetails()
+    }
+    componentDidUpdate(){
+        console.log(this.props.styles);
+        if(this.state.loading && this.props.styles && this.props.styles !== this.state){
+            this.setState({
+                ...this.props.styles,
+                loading: false
+            })
+        }
     }
     handleChange(e){
         const {name, value} = e.target;
@@ -39,7 +48,7 @@ export class LandingPage extends Component {
     }
     handleSubmit(e){
         e.preventDefault()
-        console.log(this.state)
+        this.props.sendChatbotDetails(this.state)
     }
     render() {
         return (
@@ -260,6 +269,7 @@ export class LandingPage extends Component {
                                     </FormControl>
                                 </Col>
                             </Row> */}
+                            <Button type='submit' color='primary' variant='contained'>Submit</Button>
                         </form>
                     </Col>
                     <Col className='col-4'>
@@ -275,7 +285,8 @@ const mapStateToProps = (state) => ({
     styles: state.chatbot.chatbotDetails
 })
 const mapDispatchToProps = (dispatch) => ({
-    getChatbotDetails : () => dispatch(actions.getChatbotDetails())
+    getChatbotDetails : () => dispatch(actions.getChatbotDetails()),
+    sendChatbotDetails: (payload) => dispatch(actions.sendChatbotDetails(payload))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage)

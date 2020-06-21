@@ -37,7 +37,7 @@ function* signup(request){
             yield put({type: 'USER_AUTH_SUCCESS', payload: checkResponse})
         }
     }catch(error){
-        console.error(error)
+        console.log('============',error)
         yield put({type: 'NETWORK_ERROR'})
     }
 }

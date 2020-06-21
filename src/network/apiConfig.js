@@ -8,6 +8,9 @@ class Api {
     static getWithToken(route, token, params){
         return this.requestWithToken(route, params, 'GET', token)
     }
+    static postWithToken(route, token, params){
+        return this.requestWithToken(route, params, 'POST', token)
+    }
     static requestWithToken(route, params, verb, token){
         const host = baseURL;
         const url = `${host}${route}`;
