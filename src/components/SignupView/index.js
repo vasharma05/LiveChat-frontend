@@ -15,7 +15,7 @@ export class SignupView extends Component {
             companyName: '',
             companyEmail: '',
             companyAddress: '',
-            profile_pic: '',
+            profile_pic: undefined,
             password: '',
             confirmPassword: '',
             passwordMismatch: false
@@ -24,6 +24,12 @@ export class SignupView extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     handleChange(e){
+        if(e.target.name === 'profile_pic'){
+            this.setState({
+                profile_pic: e.target.files[0]
+            }, ()=> console.log(this.state.profile_pic))
+            return
+        }
         this.setState({
             [e.target.name]: e.target.value
         }, ()=>{
@@ -40,8 +46,18 @@ export class SignupView extends Component {
     }
     handleSubmit(e){
         e.preventDefault()
-        console.log(this.state)
-        this.props.signup(this.state)
+        let formData = new FormData()
+        for(let key in this.state){
+            console.log(key, this.state[key])
+            if(key === 'profile_pic'){
+                if(this.state[key]){
+                    formData.append(key, this.state[key], this.state[key].name)
+                }
+            }else{
+                formData.append(key, this.state[key])
+            }
+        }
+        this.props.signup(formData)
     }
     render() {
         return (
@@ -110,7 +126,6 @@ export class SignupView extends Component {
                                             variant='outlined'
                                             type='file'
                                             accept='image/*'
-                                            value={this.state.profile_pic}
                                             onChange={this.handleChange}
                                             name='profile_pic'
                                             color='primary'

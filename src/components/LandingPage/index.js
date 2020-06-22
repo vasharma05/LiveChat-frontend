@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { TextField, FormControl, Button } from '@material-ui/core'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Chatbox from './Chatbox'
 import * as actions from '../../redux/actions'
 
@@ -19,8 +20,8 @@ export class LandingPage extends Component {
             senderBackground: '#eeeeee',
             receiverTextColor: '#000000',
             senderTextColor: '#000000',
-            'bot_picture' : null,
-            'background_picture': '',
+            bot_picture : undefined,
+            background_color: '#ffffff',
             inputBarBackground: '',
             inputTextColor: '',
             loading: true
@@ -32,7 +33,6 @@ export class LandingPage extends Component {
         this.props.getChatbotDetails()
     }
     componentDidUpdate(){
-        console.log(this.props.styles);
         if(this.state.loading && this.props.styles && this.props.styles !== this.state){
             this.setState({
                 ...this.props.styles,
@@ -41,14 +41,37 @@ export class LandingPage extends Component {
         }
     }
     handleChange(e){
-        const {name, value} = e.target;
-        this.setState({
-            [name]: value
-        })
+        if(e.target.name === 'bot_picture'){     
+            if(e.target.files && e.target.files.length>0){
+                this.setState({
+                    [e.target.name]: e.target.files[0]
+                })
+            }
+            
+        }else{
+            const {name, value} = e.target;
+            this.setState({
+                [name]: value
+            })
+        }
     }
     handleSubmit(e){
         e.preventDefault()
-        this.props.sendChatbotDetails(this.state)
+        const formData = new FormData()
+        let key;
+        for(key in this.state){
+            if(this.state[key]){
+                console.log(key, this.state[key])
+                if(key === 'bot_picture'){
+                    if(typeof(this.state[key]) === 'object'){
+                        formData.append(key, this.state[key], this.state[key].name)
+                    }
+                }else{
+                    formData.append(key, this.state[key])
+                }
+            }
+        }
+        this.props.sendChatbotDetails(formData)
     }
     render() {
         return (
@@ -62,7 +85,7 @@ export class LandingPage extends Component {
                     <Col className='col-8 p-3'>
                         <h1>Customize your Chatbot!</h1>
                         <h3>Chatbot's Details</h3>
-                        <form onSubmit={this.handleSubmit} >
+                        <form onSubmit={this.handleSubmit}>
                             <Row className='center-row-between py-2'>
                                 <Col className='float col-5'> 
                                     <FormControl fullWidth >
@@ -203,7 +226,7 @@ export class LandingPage extends Component {
                                     </FormControl>
                                 </Col>
                             </Row>
-                            {/* <Row className='py-2 center-row-between mt-2'>
+                            <Row className='py-2 center-row-between mt-2'>
                                 <Col className='float col-2'>
                                     <FormControl fullWidth>
                                         <label htmlFor='bot_picture' className='center-col-center small text-center'>
@@ -215,7 +238,6 @@ export class LandingPage extends Component {
                                             id='bot_picture'
                                             accept='image/*'
                                             name='bot_picture'
-                                            value={this.state.bot_picture}
                                             onChange={this.handleChange}
                                             style={{
                                                 display:'none'
@@ -225,20 +247,14 @@ export class LandingPage extends Component {
                                 </Col>
                                 <Col className='float col-2'>
                                     <FormControl fullWidth>
-                                        <label htmlFor='background_picture' className='center-col-center small text-center'>
-                                            <span>Background Picture</span>
-                                            <AddCircleIcon color='primary' className='add-icon mt-2 pointer' />
-                                        </label>
-                                        <input
-                                            type='file'
-                                            id='background_picture'
-                                            accept='image/*'
-                                            name='background_picture'
-                                            value={this.state.background_picture}
+                                        <TextField
+                                            variant='outlined'
+                                            label="Background Color"
+                                            name='background_color'
+                                            value={this.state.background_color}
                                             onChange={this.handleChange}
-                                            style={{
-                                                display:'none'
-                                            }}
+                                            color='primary'
+                                            fullWidth
                                         />
                                     </FormControl>
                                 </Col>
@@ -268,7 +284,7 @@ export class LandingPage extends Component {
                                         />
                                     </FormControl>
                                 </Col>
-                            </Row> */}
+                            </Row>
                             <Button type='submit' color='primary' variant='contained'>Submit</Button>
                         </form>
                     </Col>

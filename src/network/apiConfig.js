@@ -16,7 +16,8 @@ class Api {
         const url = `${host}${route}`;
         const options = { method: verb, data: params };
         options.headers = {
-            'Authorization': 'Token ' + token
+            'Authorization': 'Token ' + token,
+            // 'content-type': 'multipart/form-data'
         }
         options.crossOrigin = true
         console.log(`Options*******************${JSON.stringify(options)}`);

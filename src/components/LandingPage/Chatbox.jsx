@@ -8,10 +8,10 @@ function Chatbox({styles}){
         <Row className='parent center-row-center' style={{backgroundColor:'#303030'}}>
             <div style={{backgroundColor: 'white', width: '60%', padding: 0}}>
                 <Row className='py-3' style={{backgroundColor: styles.headerBackgroundColor, color: styles.headerTextColor}}>
-                    <Col className='col-2 center-col-center'>
-                        <Image width='100%' roundedCircle src={styles.bot_picture ? styles.bot_picture : require('../../assets/images/chatbot.png')} />  
+                    <Col className='col-3 center-col-center'>
+                        <Image style={{maxWidth: '100%'}} roundedCircle src={styles.bot_picture ? styles.bot_picture : require('../../assets/images/chatbot.png')} />  
                     </Col>
-                    <Col className='col-10 center-row'>
+                    <Col className='ml-2 center-row'>
                         <span className='large'>{styles.chatbotName}</span>
                     </Col>
                 </Row>
