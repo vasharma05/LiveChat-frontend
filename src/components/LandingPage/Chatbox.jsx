@@ -9,7 +9,7 @@ function Chatbox({styles}){
             <div style={{backgroundColor: 'white', width: '60%', padding: 0}}>
                 <Row className='py-3' style={{backgroundColor: styles.headerBackgroundColor, color: styles.headerTextColor}}>
                     <Col className='col-3 center-col-center'>
-                        <Image style={{maxWidth: '100%'}} roundedCircle src={styles.bot_picture ? styles.bot_picture : require('../../assets/images/chatbot.png')} />  
+                        <Image style={{maxHeight: '50px'}} roundedCircle src={styles.bot_picture ? typeof(styles.bot_picture) === 'object' ? URL.createObjectURL(styles.bot_picture) : styles.bot_picture : require('../../assets/images/chatbot.png')} />  
                     </Col>
                     <Col className='ml-2 center-row'>
                         <span className='large'>{styles.chatbotName}</span>
