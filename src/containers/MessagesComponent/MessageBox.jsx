@@ -10,9 +10,10 @@ import { connect } from 'react-redux'
 export const Message = ({message}) => {
     return (
         <Row className={message.author === message.room.split(' ')[0] ? 'sent-text mt-2' : 'received-text mt-2'}>
-            <div className='p-2'>
-                <p>{ message.content }</p>
-                <span className='ml-auto'>{moment(message.created).format('LT')}</span>
+            <div className='p-3'>
+                <span>{ message.content }</span>
+                <br/>
+                <span className='ml-auto smaller'>{moment(message.created).format('LT')}</span>
             </div>
         </Row>
     )
@@ -25,6 +26,17 @@ class MessageBox extends React.Component{
             newMessage: ''
         }
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.messagesEndRef = React.createRef()
+        this.scrollToBottom = this.scrollToBottom.bind(this)
+    }
+    scrollToBottom(){
+        this.messagesEnd.scrollIntoView({ behavior: 'smooth' })
+    }
+    componentDidMount(){
+        this.scrollToBottom()
+    }
+    componentDidUpdate(){
+        this.scrollToBottom()
     }
     handleSubmit(){
         if(this.state.newMessage.trim().length > 0){
@@ -48,6 +60,8 @@ class MessageBox extends React.Component{
                 <Row className = 'py-3 messages-ctn'>
                     <Col className='col-end pb-2'>
                         {messages_list ? messages_list : <center><CircularProgress color='primary' /></center>}
+                        <div ref={(el) => { this.messagesEnd = el; }}>
+                        </div>
                     </Col>
                 </Row>
                     <Row className='center-row'>

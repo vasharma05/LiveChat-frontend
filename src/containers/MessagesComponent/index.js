@@ -26,10 +26,13 @@ export class Messages extends Component {
             console.log('connected main')
         }
         this.ws.onmessage = (e) => {
-            const message = JSON.parse(e.data)
-            this.setState({
-                rooms: message
-            })
+            const data = JSON.parse(e.data)
+            console.log(data)
+            if(data.command === 'rooms'){
+                this.setState({
+                    rooms: data.rooms
+                })
+            }
         }
         this.ws.onclose = () => {
             console.log('disconnected main')
