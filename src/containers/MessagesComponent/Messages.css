@@ -1,0 +1,46 @@
+.message-inbox{
+    height: 100%;
+    border:1px solid grey;
+    padding: 0;
+    display: grid;
+    grid-template-rows: 64px auto;
+}
+.message-box{
+    height: 100%;
+    border:1px solid grey;
+    padding: 0;
+    display: grid;
+    grid-template-rows: 64px auto  64px;
+}
+.message-box-header{
+    box-shadow: 0 10px 8px #00000020;
+    font-size: 18px;
+}
+.messages-ctn{
+    overflow: auto;
+}
+.received-text > div{
+    background-color: #cccccc;
+}
+.sent-text > div{
+    background-color: #cccccc;
+}
+form{
+    width: 100%;
+    padding: 0;
+}
+.text-input{
+    height: 50px;
+    width: 100%;
+    border: 1px solid;
+    border-radius: 25px;
+}
+.text-input:focus{
+    border: 1px solid #2962ff;
+}
+.inbox-card{
+    cursor: pointer;
+}
+.inbox-card:hover{
+    background-color: #cccccc;
+}
