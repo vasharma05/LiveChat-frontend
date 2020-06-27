@@ -1,18 +1,28 @@
 import React, { Fragment } from 'react'
-import Header from '../components/Header'
 import {Row, Col} from 'react-bootstrap'
 import moment from 'moment'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import { CircularProgress } from '@material-ui/core'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class MessageRow extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            messages: null
+            messages: null,
+            bold: false
         }
-        this.path = `ws://127.0.0.1:8000/ws/chat/vineet/${props.room.consumer}`
+        this.path = `ws://127.0.0.1:8000/ws/chat/${props.userDetails.user.username}/${props.room.consumer}`
+        console.log(this.path)
         this.ws = new ReconnectingWebSocket(this.path)
+        this.handleClick = this.handleClick.bind(this)
+    }
+    handleClick(){
+        this.props.openMessageBox(this.props.room, this.state.messages, this.ws); 
+        this.setState({
+            bold: false
+        })
     }
     componentDidMount(){
         this.ws.onopen = () => {
@@ -30,7 +40,17 @@ class MessageRow extends React.Component{
                 this.setState(prevState => ({
                     messages: [...prevState.messages, data.message]
                 }))
-                this.props.newMessage(data.message.room, data.message)
+                let res = this.props.newMessage(data.message.room, data.message)
+                console.log(res)
+                if(res){
+                    this.setState({
+                        bold: false
+                    })
+                }else{
+                    this.setState({
+                        bold: true
+                    })
+                }
             }
         }
         this.ws.onclose = () => {
@@ -41,31 +61,40 @@ class MessageRow extends React.Component{
             console.log(err)
         }
     }
+    componentWillUnmount(){
+        this.ws.close()
+    }
     render(){
         return (
-            <Row className='py-3 inbox-card' onClick={() => this.props.openMessageBox(this.props.room, this.state.messages, this.ws)} style={{borderBottom: '1px solid grey'}}>
+            this.state.messages ? this.state.messages.length > 0 ?
+            <Row className='py-3 inbox-card' onClick={this.handleClick} style={{borderBottom: '1px solid grey'}}>
                 <Col>
                     <span>{this.props.room.consumer}</span>
                     <br/>
                     {this.state.messages ?
                         <>
-                        <span className='small muted mt-3'>{this.state.messages.length > 0 ? this.state.messages[this.state.messages.length - 1].content : null}</span>
+                        <span className='small muted mt-3' style={{fontWeight: this.state.bold ? 'bold' : 'normal'}}>{this.state.messages.length > 0 ? this.state.messages[this.state.messages.length - 1].content : null}</span>
                         <br />
                         <span className='smaller muted'>{this.state.messages.length > 0 ? moment(this.state.messages[this.state.messages.length - 1].created).format('DD/MM/YYYY hh:mm a') : null}</span>
                         </>
                     : <CircularProgress color='primary' />}
                 </Col>
-            </Row>
+            </Row> : null : null
         )
     }
 }
 
-export const MessageInbox = (props) => {
-    const list = props.rooms.map((item, ind) => <MessageRow newMessage={props.newMessage} openMessageBox={props.openMessageBox} key={ind} room={item} />)
+const MessageInbox = (props) => {
+    console.log(props)
+    const list = props.rooms.map((item, ind) => <MessageRow userDetails={props.userDetails} newMessage={props.newMessage} openMessageBox={props.openMessageBox} key={ind} room={item} />)
     return (
         <Fragment>
-            <Header title='LiveChat' />
-            <Row>
+            <Row className='center-row header'>
+                <Col>
+                    <span className='large'>LiveChat</span>
+                </Col>
+            </Row>
+            <Row className='inbox-ctn'>
                 <div style={{width: '100%'}}>
                     {list}
                 </div>
@@ -74,4 +103,8 @@ export const MessageInbox = (props) => {
     )
 }
 
-export default MessageInbox
+const mapStateToProps = (state) => ({
+    userDetails: state.auth.userDetails
+})
+
+export default connect(mapStateToProps)(withRouter(MessageInbox))

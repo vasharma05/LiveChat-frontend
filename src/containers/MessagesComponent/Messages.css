@@ -1,13 +1,11 @@
 .message-inbox{
     height: 100%;
-    border:1px solid grey;
     padding: 0;
     display: grid;
     grid-template-rows: 64px auto;
 }
 .message-box{
     height: 100%;
-    border:1px solid grey;
     padding: 0;
     display: grid;
     grid-template-rows: 64px auto  64px;
@@ -18,12 +16,17 @@
 }
 .messages-ctn{
     overflow: auto;
+    background-color: #22873d20;
 }
 .received-text > div{
-    background-color: #cccccc;
+    background-color: #f73378;
+    color: white;
+    border-radius: 30px;
 }
 .sent-text > div{
-    background-color: #cccccc;
+    background-color: #5a48a7;
+    color: white;
+    border-radius: 30px;
 }
 form{
     width: 100%;
@@ -32,15 +35,31 @@ form{
 .text-input{
     height: 50px;
     width: 100%;
-    border: 1px solid;
-    border-radius: 25px;
 }
 .text-input:focus{
     border: 1px solid #2962ff;
 }
 .inbox-card{
     cursor: pointer;
+    background-color: #ffffffbb;
 }
 .inbox-card:hover{
-    background-color: #cccccc;
+    background-color: #00000020;
+}
+.inbox-ctn{
+    height: calc(100%);
+    overflow: auto;
+    max-height: 100%;
+}
+.message{
+    background-color: #22873d20;
+    border-radius: 16px;
+}
+.header{
+    background-color: #303030;
+    color: white;
+    border-bottom: 1px solid;
+}
+.input-bar{
+    background-color: #eeeeee;
 }

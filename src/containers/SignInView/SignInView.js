@@ -4,7 +4,7 @@ import { Input , Button, FormControl, InputLabel, CircularProgress } from '@mate
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/actions'
-
+import Navbar from '../components/Navbar'
 
 export class SignInView extends Component {
     constructor(){
@@ -29,11 +29,7 @@ export class SignInView extends Component {
     render() {
         return (
             <div className='parent'>
-                    <Row className='header'>
-                        <Col className='center-row-between'>
-                            <span className='large'>Live Chat!</span>
-                        </Col>
-                    </Row>
+                    <Navbar />
                     <Row>
                         <Col className='col-md-6 offset-md-3'>
                             <Row className='mt-5 box p-3'>

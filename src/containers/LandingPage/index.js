@@ -5,6 +5,7 @@ import { TextField, FormControl, Button } from '@material-ui/core'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Chatbox from './Chatbox'
 import * as actions from '../../redux/actions'
+import Navbar from '../components/Navbar'
 
 export class LandingPage extends Component {
     constructor(props){
@@ -22,8 +23,8 @@ export class LandingPage extends Component {
             senderTextColor: '#000000',
             bot_picture : undefined,
             background_color: '#ffffff',
-            inputBarBackground: '',
-            inputTextColor: '',
+            inputBarBackground: '#ffffff',
+            inputTextColor: '#000000',
             loading: true
         }
         this.handleChange = this.handleChange.bind(this)
@@ -76,11 +77,7 @@ export class LandingPage extends Component {
     render() {
         return (
             <div className='parent'>
-                <Row className='header'>
-                    <Col className='center-row-between'>
-                        <span className='large'>Live Chat!</span>
-                    </Col>
-                </Row>
+                <Navbar />
                 <Row>
                     <Col className='col-8 p-3'>
                         <h1>Customize your Chatbot!</h1>
@@ -89,7 +86,7 @@ export class LandingPage extends Component {
                             <Row className='center-row-between py-2'>
                                 <Col className='float col-5'> 
                                     <FormControl fullWidth >
-                                        <TextField 
+                                        <TextField
                                             name='chatbotName'
                                             variant='outlined'
                                             label="Chatbot's Name"
@@ -104,6 +101,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-3'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label='Header Color'
                                             name='headerBackgroundColor'
@@ -117,6 +115,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-3'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label='Header Text Color'
                                             name='headerTextColor'
@@ -134,6 +133,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-5'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label='Introduction Text'
                                             name='introductionText'
@@ -147,6 +147,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-3'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label='Background Color'
                                             name='introductionBackgroundColor'
@@ -160,6 +161,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-3'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label='Header Text Color'
                                             name='introductionTextColor'
@@ -176,6 +178,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-3'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label="Reciever Background"
                                             name='receiverBackground'
@@ -189,6 +192,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-2'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label="Reciever Text"
                                             name='receiverTextColor'
@@ -202,6 +206,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-3'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label="Sender Background"
                                             name='senderBackground'
@@ -215,6 +220,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-2'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label="Sender Text"
                                             name='senderTextColor'
@@ -248,6 +254,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-2'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label="Background Color"
                                             name='background_color'
@@ -261,6 +268,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-3'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label="Input Bar BG"
                                             name='inputBarBackground'
@@ -274,6 +282,7 @@ export class LandingPage extends Component {
                                 <Col className='float col-3'>
                                     <FormControl fullWidth>
                                         <TextField
+                                            required={true}
                                             variant='outlined'
                                             label="Input Text Color"
                                             name='inputTextColor'
@@ -285,7 +294,7 @@ export class LandingPage extends Component {
                                     </FormControl>
                                 </Col>
                             </Row>
-                            <Button type='submit' color='primary' variant='contained'>Submit</Button>
+                            <Button type='submit' color='primary' className='mt-3' variant='contained'>Submit</Button>
                         </form>
                     </Col>
                     <Col className='col-4'>

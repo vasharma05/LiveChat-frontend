@@ -15,7 +15,7 @@ function App(props) {
   const { signinData, networkError } = props
   return (
     <Router>
-      <Suspense fallback={<center><CircularProgress color='primary' /></center>} >
+      <Suspense fallback={<center className='mt-3'><CircularProgress color='primary' /></center>} >
         <Switch>
           {networkError && <Route path='/' component={NetworkError} />}
           {signinData && <Route exact path='/' component={LandingPage} />}

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import {Row, Col} from 'react-bootstrap'
-import { FormControl, TextField, Input, InputLabel, Button, CircularProgress } from '@material-ui/core'
+import { FormControl, TextField, Button, CircularProgress } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/actions'
+import Navbar from '../components/Navbar'
 
 export class SignupView extends Component {
     constructor(){
@@ -62,11 +63,7 @@ export class SignupView extends Component {
     render() {
         return (
             <div className='parent'>
-                <Row className='header'>
-                    <Col className='center-row-between'>
-                        <span className='large'>Live Chat!</span>
-                    </Col>
-                </Row>
+                <Navbar />
                 <Row className='mt-5'>
                     <Col className='col-md-6 offset-md-3 box p-3'>
                     {this.props.authError ? <span style={{color: 'red'}}>{this.props.authError}</span>: null}
@@ -112,67 +109,6 @@ export class SignupView extends Component {
                                             onChange={this.handleChange}
                                             name='username'
                                             label='Username'
-                                            color='primary'
-                                            required
-                                        />
-                                    </FormControl>
-                                </Col>
-                            </Row>
-                            <Row className='mt-3'>
-                                <Col>
-                                    <FormControl fullWidth>
-                                        <InputLabel>Profile Picture</InputLabel>
-                                        <Input
-                                            variant='outlined'
-                                            type='file'
-                                            accept='image/*'
-                                            onChange={this.handleChange}
-                                            name='profile_pic'
-                                            color='primary'
-                                        />
-                                    </FormControl>
-                                </Col>
-                            </Row>
-                            <Row className='mt-3'>
-                                <Col>
-                                    <FormControl fullWidth>
-                                        <TextField
-                                            variant='outlined'
-                                            value={this.state.companyName}
-                                            onChange={this.handleChange}
-                                            name='companyName'
-                                            label='Company Name'
-                                            color='primary'
-                                            required
-                                        />
-                                    </FormControl>
-                                </Col>
-                            </Row>
-                            <Row className='mt-3'>
-                                <Col>
-                                    <FormControl fullWidth>
-                                        <TextField
-                                            variant='outlined'
-                                            type='email'
-                                            value={this.state.companyEmail}
-                                            onChange={this.handleChange}
-                                            name='companyEmail'
-                                            label='Company Email'
-                                            color='primary'
-                                            required
-                                        />
-                                    </FormControl>
-                                </Col>
-                            </Row>
-                            <Row className='mt-3'>
-                                <Col>
-                                    <FormControl fullWidth>
-                                        <TextField
-                                            variant='outlined'
-                                            value={this.state.companyAddress}
-                                            onChange={this.handleChange}
-                                            name='companyAddress'
-                                            label='Company Address'
                                             color='primary'
                                             required
                                         />

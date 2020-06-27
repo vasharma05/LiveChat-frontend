@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import { Header } from '../components/Header'
 import { Row, Col } from 'react-bootstrap'
 import Button from '@material-ui/core/Button'
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
@@ -7,7 +6,7 @@ import { CircularProgress } from '@material-ui/core';
 import moment from 'moment'
 import { connect } from 'react-redux'
 
-export const Message = ({message}) => {
+const Message = ({message}) => {
     return (
         <Row className={message.author === message.room.split(' ')[0] ? 'sent-text mt-2' : 'received-text mt-2'}>
             <div className='p-3'>
@@ -56,7 +55,11 @@ class MessageBox extends React.Component{
         const messages_list = this.props.messages ? this.props.messages.map((item, ind) => <Message key={ind} message={item} />) : null
         return (
             <Fragment>
-                <Header title={this.props.room.consumer} />
+                <Row className='center-row header'>
+                    <Col>
+                        <span className='large'>{this.props.room.consumer.capitalize()}</span>
+                    </Col>
+                </Row>
                 <Row className = 'py-3 messages-ctn'>
                     <Col className='col-end pb-2'>
                         {messages_list ? messages_list : <center><CircularProgress color='primary' /></center>}
@@ -64,8 +67,8 @@ class MessageBox extends React.Component{
                         </div>
                     </Col>
                 </Row>
-                    <Row className='center-row'>
-                        <Col className='col-11'>
+                    <Row className='center-row input-bar'>
+                        <Col>
                             <input
                                 className='text-input px-3'
                                 name='text'
@@ -75,9 +78,9 @@ class MessageBox extends React.Component{
                                 onKeyDown={(e)=> e.keyCode === 13 ? this.handleSubmit() : null}
                             />
                         </Col>
-                        <Col>
-                            <Button onClick={this.handleSubmit}><SendRoundedIcon style={{fontSize: '40px', color: 'green'}} /></Button>
-                        </Col>
+                        <div className='center-col-center' style={{height:'100%'}}>
+                            <Button style={{padding: 0, height:'100%'}} onClick={this.handleSubmit}><SendRoundedIcon style={{color: 'green', fontSize: '30px'}} /></Button>
+                        </div>
                     </Row>
             </Fragment>
         )
