@@ -5,6 +5,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket'
 import { CircularProgress } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 
 class MessageRow extends React.Component{
     constructor(props){
@@ -73,7 +74,7 @@ class MessageRow extends React.Component{
                     <br/>
                     {this.state.messages ?
                         <>
-                        <span className='small muted mt-3' style={{fontWeight: this.state.bold ? 'bold' : 'normal'}}>{this.state.messages.length > 0 ? this.state.messages[this.state.messages.length - 1].content : null}</span>
+                        <span className='small muted mt-3' style={{fontWeight: this.state.bold ? 'bold' : 'normal'}}>{this.state.messages.length > 0 ? this.state.messages[this.state.messages.length - 1].type === 'text' ? this.state.messages[this.state.messages.length - 1].content : this.state.messages[this.state.messages.length - 1].type === 'image/jpeg' || this.state.messages[this.state.messages.length - 1].type === 'image/png' || this.state.messages[this.state.messages.length - 1].type === 'image/svg+xml' ? <CameraAltIcon style={{color: 'black'}} />  : 'File' : null}</span>
                         <br />
                         <span className='smaller muted'>{this.state.messages.length > 0 ? moment(this.state.messages[this.state.messages.length - 1].created).format('DD/MM/YYYY hh:mm a') : null}</span>
                         </>
