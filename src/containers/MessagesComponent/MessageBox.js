@@ -31,7 +31,8 @@ class MessageBox extends React.Component{
         this.state = {
             newMessage: '',
             drawer: false,
-            files: null
+            files: null,
+            uploaded : 0
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.messagesEndRef = React.createRef()
@@ -94,7 +95,8 @@ class MessageBox extends React.Component{
                     let files = this.state.files
                     files.find(item => item.id === el.id).progress = progress
                     this.setState(prevState => ({
-                        files
+                        files,
+                        uploaded: progress === 100 ? prevState.uploaded + 1 : prevState.uploaded
                     }), ()=>console.log(this.state.files))
                 }
             }
@@ -118,6 +120,15 @@ class MessageBox extends React.Component{
     render(){
         console.log(this.state.files)
         const messages_list = this.props.messages ? this.props.messages.map((item, ind) => <Message key={ind} message={item} />) : null
+        if(this.state.uploaded && this.state.files){
+            if(this.state.uploaded === this.state.files.length){
+                this.setState({
+                    drawer: false,
+                    files: null,
+                    uploaded: 0
+                })
+            }
+        }
         return (
             <Fragment>
                 <Row className='center-row header'>
@@ -180,7 +191,7 @@ class MessageBox extends React.Component{
                                 <Col>
                                     <b>File Type</b>
                                 </Col>
-                                <Col>
+                                <Col className='center-col-center'>
                                     <b>Progress</b>
                                 </Col>
                             </Row>
