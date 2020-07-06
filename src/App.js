@@ -10,6 +10,7 @@ const SignupView = lazy(()=> import('./containers/SignupView'))
 const LandingPage = lazy(()=> import('./containers/LandingPage')) 
 const NetworkError = lazy(()=> import('./containers/NetworkError'))
 const Messages = lazy(() => import('./containers/MessagesComponent'))
+const ConsumerChatBox = lazy(()=> import('./containers/ConsumerChatBox'))
 
 function App(props) {
   const { signinData, networkError } = props
@@ -22,6 +23,7 @@ function App(props) {
           {!signinData && <Route exact path='/signin' component={SignInView} />}
           {!signinData && <Route exact path='/signup' component={SignupView} />}
           {signinData && <Route exact path='/messages' component={Messages} />}
+          <Route exact path='/consumer/:user' component={ConsumerChatBox} />
           {signinData ? 
             <Redirect to='/' />:
             <Redirect to='signin' />

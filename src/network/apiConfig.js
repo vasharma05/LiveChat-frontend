@@ -2,6 +2,9 @@ import axios from 'axios'
 const baseURL = 'http://127.0.0.1:8000/'
 
 class Api {
+    static get(route, params){
+        return this.request(route, params, 'get')
+    }
     static post(route, params){
         return this.request(route, params, 'post')
     }
@@ -30,7 +33,7 @@ class Api {
         const url = `${host}${route}`;
         const options = { method: verb, data: params };
         options.headers = {}
-        options.crossOrigin = true
+        // options.crossOrigin = true
         console.log(`Options*******************${JSON.stringify(options)}`);
         console.log(`URL*********************${JSON.stringify(url)}`);
         console.log(url, options)

@@ -26,14 +26,30 @@ function* getChatbotDetails(request){
 
 function* sendChatbotDetails(request){
     let token = yield select(getToken)
-    console.log(request, request.payload)
+    console.log(request)
     try{
         const response = yield call(api.sendChatbotDetails, request.payload, token)
         const checkResponse = checkAPIfailure(response)
         if(checkResponse.detail === 'success'){
-            yield({ype: 'SET_CHATBOT_MESSAGE', message: checkResponse.detail})
+            yield put({type: 'SET_CHATBOT_MESSAGE', message: checkResponse.detail})
+            yield put({type: 'GET_CHATBOT_DETAILS'})
         }else{
-            yield({ype: 'SET_CHATBOT_MESSAGE', message: 'failed'})
+            yield put({type: 'SET_CHATBOT_MESSAGE', message: checkResponse.detail})
+        }
+    }catch(error){
+        console.error(error)
+        yield put({type: 'NETWORK_ERROR'})
+    }
+}
+
+function* sendConsumerEmail(request){
+    let payload = request.payload
+    console.log(request)
+    try{
+        const response = yield call(api.sendConsumerEmail, payload)
+        const checkResponse = checkAPIfailure(response)
+        if(checkResponse.message === 'success'){
+            yield put({type:'SET_CONSUMER',  consumer: checkResponse.consumer})
         }
     }catch(error){
         console.error(error)
@@ -44,7 +60,8 @@ function* sendChatbotDetails(request){
 function* chatSaga(){
     return [
         yield takeEvery('GET_CHATBOT_DETAILS', getChatbotDetails),
-        yield takeEvery(types.SEND_CHATBOT_MESSAGE, sendChatbotDetails)
+        yield takeEvery(types.SEND_CHATBOT_MESSAGE, sendChatbotDetails),
+        yield takeEvery(types.SEND_CONSUMER_EMAIL, sendConsumerEmail)
     ]
 }
 

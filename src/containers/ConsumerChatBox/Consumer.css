@@ -5,10 +5,10 @@
     grid-template-rows: 64px auto;
 }
 .message-box{
-    height: 100%;
+    height: 100vh;
     padding: 0;
     display: grid;
-    grid-template-rows: 64px auto  64px;
+    grid-template-rows: 64px 48px auto  64px;
 }
 .message-box-header{
     box-shadow: 0 10px 8px #00000020;
@@ -19,17 +19,14 @@
     background-color: #22873d20;
 }
 .received-text > div{
-    background-color: #f73378;
+    /* background-color: #f73378; */
     color: white;
     border-radius: 30px;
 }
 .sent-text > div{
-    background-color: #5a48a7;
+    /* background-color: #5a48a7; */
     color: white;
     border-radius: 30px;
-}
-.received-text > div > img, .sent-text > div > img{
-    max-height: 300px;
 }
 form{
     width: 100%;
@@ -62,7 +59,11 @@ form{
     background-color: #303030;
     color: white;
     border-bottom: 1px solid;
+    position: relative;
 }
 .input-bar{
     background-color: #eeeeee;
+}
+.introductoryText{
+    box-shadow: 0 2px 8px 0 #00000040;
 }

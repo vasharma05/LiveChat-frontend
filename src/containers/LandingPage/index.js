@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { TextField, FormControl, Button } from '@material-ui/core'
+import { TextField, FormControl, Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Chatbox from './Chatbox'
 import * as actions from '../../redux/actions'
 import Navbar from '../components/Navbar'
-
+import CustomizedSnackbar from '../components/CustomizedSnackbar'
 export class LandingPage extends Component {
     constructor(props){
         super(props)
@@ -25,10 +25,18 @@ export class LandingPage extends Component {
             background_color: '#ffffff',
             inputBarBackground: '#ffffff',
             inputTextColor: '#000000',
-            loading: true
+            loading: true,
+            getScript: false, 
+            snackbar: {
+                open: false,
+                severity: null,
+                message: null
+            }
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.openSnackbar = this.openSnackbar.bind(this)
+        this.closeSnackbar = this.closeSnackbar.bind(this)
     }
     componentDidMount(){
         this.props.getChatbotDetails()
@@ -73,6 +81,28 @@ export class LandingPage extends Component {
             }
         }
         this.props.sendChatbotDetails(formData)
+    }
+    openSnackbar(e){
+        this.setState({
+            snackbar:{
+                open:true,
+                severity: 'error',
+                message: 'Save the chatbot details first'
+            }
+        })
+    }
+    closeSnackbar(e, reason){
+        if(reason === 'clickaway'){
+            return
+        }else{
+            this.setState({
+                snackbar:{
+                    open:false,
+                    severity:null,
+                    message:null
+                }
+            })
+        }
     }
     render() {
         return (
@@ -294,20 +324,38 @@ export class LandingPage extends Component {
                                     </FormControl>
                                 </Col>
                             </Row>
-                            <Button type='submit' color='primary' className='mt-3' variant='contained'>Submit</Button>
+                            <Row className='mt-4 center-row-space-between'>
+                                <Button type='submit' color='primary' className='mt-3' variant='contained'>Submit</Button>
+                                <Button variant='outlined' color='secondary' className='mt-3 ml-auto' onClick={this.props.styles ? ()=>this.setState({getScript:true}) : this.openSnackbar}>Get your script</Button>
+                            </Row>
+                            <div>{this.props.message}</div>
                         </form>
                     </Col>
                     <Col className='col-4'>
                         <Chatbox styles={this.state} />
                     </Col>
                 </Row>
+                <Dialog
+                    open={this.state.getScript}
+                    onClose={()=> this.setState({getScript : false})}
+                >
+                    <DialogTitle>
+                        Add this script to the end of your html file
+                    </DialogTitle>
+                    <DialogContent>
+                        {`<script async id='liveChat' user-name=${this.props.userDetails.user.username} src='http://localhost:8000/media/script/script.js'></script>`}
+                    </DialogContent>
+                </Dialog>
+                <CustomizedSnackbar open={this.state.snackbar.open} handleClose={this.closeSnackbar} severity={this.state.snackbar.severity} message={this.state.snackbar.message} />
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    styles: state.chatbot.chatbotDetails
+    styles: state.chatbot.chatbotDetails,
+    message: state.chatbot.message,
+    userDetails: state.auth.userDetails
 })
 const mapDispatchToProps = (dispatch) => ({
     getChatbotDetails : () => dispatch(actions.getChatbotDetails()),
