@@ -1,9 +1,12 @@
+import { RESET_AUTH_MESSAGE } from "../constants"
+
 const initState = {
     authError: null,
     authLoading: false,
     signinData: null,
     userDetails: null, 
-    networkError : false
+    networkError : false,
+    message: null
 }
 
 const updateObject = (state, newState) => ({
@@ -43,6 +46,14 @@ const retryConnection = (state, action) =>
         networkError : false
     })
 
+const set_auth_message = (state, action) => 
+    updateObject(state,{
+        message: action.message
+    })
+const resetAuthMessage = (state, action) => 
+    updateObject(state, {
+        message:null
+    })
 const authReducer = (state=initState, action) => {
     switch(action.type){
         case 'RETRY_CONNECT':
@@ -55,6 +66,10 @@ const authReducer = (state=initState, action) => {
             return userAuthSuccess(state, action)
         case 'NETWORK_ERROR':
             return networkError(state, action)
+        case 'SET_AUTH_MESSAGE':
+            return set_auth_message(state, action)
+        case 'RESET_AUTH_MESSAGE':
+            return resetAuthMessage(state, action)
         default: 
             return state
     }

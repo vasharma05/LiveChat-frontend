@@ -13,3 +13,12 @@ export const signup = (payload) => ({
 export const retryConnection = () => ({
     type: types.RETRY_CONNECT
 })
+
+export const changePassword = (payload) => ({
+    type: types.PUSH_CHANGE_PASSWORD,
+    payload
+})
+
+export const resetAuthMessage = () =>({
+    type: types.RESET_AUTH_MESSAGE
+})
