@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Row, Col } from 'react-bootstrap'
-import { TextField, FormControl, Button } from '@material-ui/core'
+import { TextField, FormControl, Button, CircularProgress } from '@material-ui/core'
 import Navbar from '../components/Navbar'
 import * as actions from '../../redux/actions'
 import CustomizedSnackbar from '../components/CustomizedSnackbar'
@@ -12,12 +12,14 @@ function ChangePassword(props){
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [loading, setLoading] = useState(false)
     const [snackbar, setSnackbar] = useState({
         open:false,
         severity : null,
         message: null
     })
     if(props.message && !snackbar.open){
+        setLoading(true)
         if(props.message === 'Password changed successfully'){
             setSnackbar({
                 open: true,
@@ -103,7 +105,7 @@ function ChangePassword(props){
                         </Row>
                         <Row className='mt-3'>
                             <Col>
-                                <Button type='submit' variant='outlined' fullWidth color='primary' disabled={password !== confirmPassword} >Save</Button>
+                                !loading ? <Button type='submit' variant='outlined' fullWidth color='primary' disabled={password !== confirmPassword} >Save</Button> : <center><CircularProgress color='primary' /></center>
                             </Col>
                         </Row>
                     </form>
