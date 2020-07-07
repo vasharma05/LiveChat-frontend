@@ -105,7 +105,7 @@ function ChangePassword(props){
                         </Row>
                         <Row className='mt-3'>
                             <Col>
-                                !loading ? <Button type='submit' variant='outlined' fullWidth color='primary' disabled={password !== confirmPassword} >Save</Button> : <center><CircularProgress color='primary' /></center>
+                                {!loading ? <Button type='submit' variant='outlined' fullWidth color='primary' disabled={password !== confirmPassword} >Save</Button> : <center><CircularProgress color='primary' /></center>}
                             </Col>
                         </Row>
                     </form>

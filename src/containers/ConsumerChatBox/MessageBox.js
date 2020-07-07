@@ -7,6 +7,7 @@ import {Row, Col, Image} from 'react-bootstrap'
 import moment from 'moment'
 import axios from 'axios'
 import './Consumer.css'
+import CustomizedSnackbar from '../components/CustomizedSnackbar'
 
 const Message = ({message, chatbot}) => {
     return (
@@ -32,6 +33,7 @@ class MessageBox extends React.Component{
             drawer: false,
             files: null,
             uploaded : 0,
+            uploading: false,
             messages: [
                 {
                     author:this.props.user,
@@ -118,6 +120,10 @@ class MessageBox extends React.Component{
     handleFileUpload(e){
         let files = []
         for(let i=0;i<e.target.files.length; i++){
+            if(e.target.files[i].size/(1024*1024) > 5){
+                files = null
+                break
+            }
             files.push({
                 id: i,
                 file: e.target.files[i],
@@ -127,21 +133,27 @@ class MessageBox extends React.Component{
         }
         this.setState({
             files: files,
-            drawer: true
-        })
+            drawer: files ? true : false,
+            sizeError : files ? false : true
+        }, ()=> console.log(this.state.files))
     }
     handleCancel(){
         this.setState({
             files:null,
-            drawer: false
+            drawer: false,
+            uploaded: 0,
+            uploading: false
         })
     }
     handleFileSubmit(e){
+        this.setState({
+            uploading : true
+        })
         this.state.files.forEach(el => {
             const config = {
                 onUploadProgress: progressEvent => {
                     const {loaded,total} = progressEvent
-                    let progress = parseInt(loaded/total)*100
+                    let progress = parseInt((loaded/total)*100)
                     let files = this.state.files
                     files.find(item => item.id === el.id).progress = progress
                     this.setState(prevState => ({
@@ -168,17 +180,8 @@ class MessageBox extends React.Component{
     render(){
         const {chatbot} = this.props
         const messages_list = this.state.messages.length > 0 ? this.state.messages.map((item, ind) => <Message chatbot={chatbot} key={ind} message={item} />) : []
-        if(this.state.uploaded && this.state.files){
-            if(this.state.uploaded === this.state.files.length){
-                this.setState({
-                    drawer: false,
-                    files: null,
-                    uploaded: 0
-                })
-            }
-        }
-        
         return (
+        <>
             <div className='message-box'>
                 <Row className='center-row header' style={{backgroundColor: chatbot.headerBackgroundColor, color: chatbot.headerTextColor}}>
                     <div className='ml-2'>
@@ -223,6 +226,7 @@ class MessageBox extends React.Component{
                                     id='file_upload'
                                     multiple
                                     type='file'
+                                    accept='image/*, .pdf, .txt'
                                     name='document'
                                     onChange={this.handleFileUpload}
                                     style={{
@@ -255,15 +259,17 @@ class MessageBox extends React.Component{
                             {this.state.files ? this.state.files.map((item, ind) => <Row className='mt-2' key={ind}><Col>{item.file.name}</Col><Col>{item.file.type}</Col><Col className='center-col-center'><CircularProgress variant='static' value={item.progress} /></Col></Row>):null}
                             <Row className='mt-3'>
                                 <Col className='center-col-center'>
-                                    <Button variant='outlined' onClick={this.handleCancel.bind(this)} >Cancel</Button>
+                                    {!this.state.uploading ? <Button variant='outlined' onClick={this.handleCancel.bind(this)} >Cancel</Button> : null}
                                 </Col>
                                 <Col className='center-col-center'>
-                                    <Button variant='contained' color='primary' onClick={this.handleFileSubmit.bind(this)}>Upload</Button>
+                                    {this.state.uploading ? this.state.files && this.state.uploaded === this.state.files.length ? <Button variant='contained' color='primary' onClick={this.handleCancel.bind(this)}>Done</Button> : <CircularProgress color='primary' /> : <Button variant='contained' color='primary' onClick={this.handleFileSubmit.bind(this)}>Upload</Button>}
                                 </Col>
                             </Row>
                         </DialogContent>
                     </Dialog>
             </div >
+            <CustomizedSnackbar open={this.state.sizeError} handleClose={() => this.setState({sizeError: false})} severity={'error'} message='Files larger than 5 MB are not allowed' />
+        </>
         )
     }
 }

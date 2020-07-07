@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import axios from 'axios'
+import CustomizedSnackbar from '../components/CustomizedSnackbar'
 
 const Message = ({message}) => {
     return (
@@ -32,7 +33,9 @@ class MessageBox extends React.Component{
             newMessage: '',
             drawer: false,
             files: null,
-            uploaded : 0
+            uploading: false,
+            uploaded : 0,
+            sizeError: false
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.messagesEndRef = React.createRef()
@@ -67,6 +70,10 @@ class MessageBox extends React.Component{
         // console.log(e.target.files)
         let files = []
         for(let i=0;i<e.target.files.length; i++){
+            if(e.target.files[i].size/(1024*1024) > 5){
+                files = null
+                break
+            }
             files.push({
                 id: i,
                 file: e.target.files[i],
@@ -76,28 +83,34 @@ class MessageBox extends React.Component{
         }
         this.setState({
             files: files,
-            drawer: true
+            drawer: files ? true : false,
+            sizeError : files ? false : true
         }, ()=> console.log(this.state.files))
     }
     handleCancel(){
         this.setState({
             files:null,
-            drawer: false
+            drawer: false,
+            uploaded: 0,
+            uploading: false
         })
     }
     handleFileSubmit(e){
+        this.setState({
+            uploading: true
+        })
         this.state.files.forEach(el => {
             const config = {
                 onUploadProgress: progressEvent => {
                     console.log(progressEvent)
                     const {loaded,total} = progressEvent
-                    let progress = parseInt(loaded/total)*100
+                    let progress = parseInt((loaded/total)*100)
                     let files = this.state.files
                     files.find(item => item.id === el.id).progress = progress
                     this.setState(prevState => ({
                         files,
                         uploaded: progress === 100 ? prevState.uploaded + 1 : prevState.uploaded
-                    }), ()=>console.log(this.state.files))
+                    }))
                 }
             }
             let form = new FormData()
@@ -120,15 +133,15 @@ class MessageBox extends React.Component{
     render(){
         console.log(this.state.files)
         const messages_list = this.props.messages ? this.props.messages.map((item, ind) => <Message key={ind} message={item} />) : null
-        if(this.state.uploaded && this.state.files){
-            if(this.state.uploaded === this.state.files.length){
-                this.setState({
-                    drawer: false,
-                    files: null,
-                    uploaded: 0
-                })
-            }
-        }
+        // if(this.state.uploaded && this.state.files){
+        //     if(this.state.uploaded === this.state.files.length){
+        //         this.setState({
+        //             drawer: false,
+        //             files: null,
+        //             uploaded: 0
+        //         })
+        //     }
+        // }
         return (
             <Fragment>
                 <Row className='center-row header'>
@@ -166,6 +179,7 @@ class MessageBox extends React.Component{
                                     id='file_upload'
                                     multiple
                                     type='file'
+                                    accept='image/*, .pdf, .txt'
                                     name='document'
                                     onChange={this.handleFileUpload}
                                     style={{
@@ -198,14 +212,15 @@ class MessageBox extends React.Component{
                             {this.state.files ? this.state.files.map((item, ind) => <Row className='mt-2' key={ind}><Col>{item.file.name}</Col><Col>{item.file.type}</Col><Col className='center-col-center'><CircularProgress variant='static' value={item.progress} /></Col></Row>):null}
                             <Row className='mt-3'>
                                 <Col className='center-col-center'>
-                                    <Button variant='outlined' onClick={this.handleCancel.bind(this)} >Cancel</Button>
+                                    {!this.state.uploading ? <Button variant='outlined' onClick={this.handleCancel.bind(this)} >Cancel</Button> : null}
                                 </Col>
                                 <Col className='center-col-center'>
-                                    <Button variant='contained' color='primary' onClick={this.handleFileSubmit.bind(this)}>Upload</Button>
+                                    {this.state.uploading ? this.state.files && this.state.uploaded === this.state.files.length ? <Button variant='contained' color='primary' onClick={this.handleCancel.bind(this)}>Done</Button> : <CircularProgress color='primary' /> : <Button variant='contained' color='primary' onClick={this.handleFileSubmit.bind(this)}>Upload</Button>}
                                 </Col>
                             </Row>
                         </DialogContent>
                     </Dialog>
+                    <CustomizedSnackbar open={this.state.sizeError} handleClose={() => this.setState({sizeError: false})} severity={'error'} message='Files larger than 5 MB are not allowed' />
             </Fragment>
         )
     }

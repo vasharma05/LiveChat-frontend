@@ -1,5 +1,3 @@
-import { RESET_AUTH_MESSAGE } from "../constants"
-
 const initState = {
     authError: null,
     authLoading: false,
