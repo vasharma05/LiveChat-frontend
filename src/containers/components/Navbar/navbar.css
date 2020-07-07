@@ -1,0 +1,10 @@
+nav{
+    position: fixed;
+}
+a{
+    color: white !important;
+    font-size: 20px;
+}
+.navbar-toggler-icon{
+    color: white;
+}

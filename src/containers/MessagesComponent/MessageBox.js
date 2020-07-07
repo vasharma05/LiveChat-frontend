@@ -220,7 +220,7 @@ class MessageBox extends React.Component{
                             </Row>
                         </DialogContent>
                     </Dialog>
-                    <CustomizedSnackbar open={this.state.sizeError} handleClose={() => this.setState({sizeError: false})} severity={'error'} message='Files larger than 5 MB are not allowed' />
+                    { this.state.sizeError ? <CustomizedSnackbar open={this.state.sizeError} handleClose={() => this.setState({sizeError: false})} severity={'error'} message='Files larger than 5 MB are not allowed' /> : null}
             </Fragment>
         )
     }

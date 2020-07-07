@@ -6,7 +6,7 @@ import SendIcon from '@material-ui/icons/Send';
 function Chatbox({styles}){
     return(
         <Row className='parent center-row-center' style={{backgroundColor:'#303030'}}>
-            <div id='chatbox' style={{backgroundColor: 'white', width: '60%', padding: 0}}>
+            <Col id='chatbox' className='col-md-7 col-10' style={{backgroundColor: 'white', padding: 0}}>
                 <Row className='py-3' style={{backgroundColor: styles.headerBackgroundColor, color: styles.headerTextColor}}>
                     <Col className='col-3 center-col-center'>
                         <Image style={{maxHeight: '50px'}} roundedCircle src={styles.bot_picture ? typeof(styles.bot_picture) === 'object' ? URL.createObjectURL(styles.bot_picture) : styles.bot_picture : require('../../assets/images/chatbot.png')} />  
@@ -116,13 +116,16 @@ function Chatbox({styles}){
                     <Col className='col-10'>
                         <input
                             placeholder='Text Input'
+                            style={{
+                                width:'100%'
+                            }}
                         />
                     </Col>
                     <Col className='col-2 center-col-center'>
                         <SendIcon style={{fontSize: '30px', color: 'green'}} />
                     </Col>
                 </Row>
-            </div>  
+            </Col>  
         </Row>
     )
 }

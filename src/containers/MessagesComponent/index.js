@@ -121,11 +121,11 @@ export class Messages extends Component {
                 <Navbar />
                 <Row className='body'>
                     <Col className='col-lg-10 offset-lg-1 col'>
-                        <Row className='message' style={{height: '90vh', marginTop: '2.5vh', overflow:'hidden'}}>
-                            <Col className='col-3 message-inbox'>
+                        <Row className='message' style={{minHeight: '90vh', marginTop: '2.5vh', overflow:'hidden'}}>
+                            <Col className='col-md-3 col-12 message-inbox'>
                                 <MessageInbox openMessageBox={this.openMessageBox} newMessage={this.newMessage} rooms={this.state.rooms} />
                             </Col>
-                            <Col className='col-9 message-box' style={{height: '100%'}}>
+                            <Col className='col-md-9 col-12 message-box' style={{height: '100%'}}>
                                 {this.state.messageBox ?  <MessageBox room={this.state.messageBox} messages={this.state.messages} ws={this.state.ws} /> : null}
                             </Col>
                         </Row>
