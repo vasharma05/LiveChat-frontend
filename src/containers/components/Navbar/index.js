@@ -15,7 +15,6 @@ const Navbar = (props) => {
         window.localStorage.clear()
         setRedirect(true)
     }
-    console.log(redirect)
     return ( 
         redirect ? <Redirect to='/signin' /> :
         <nav className="navbar navbar-expand-lg navbar-light bg-dark py-3">

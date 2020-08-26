@@ -39,6 +39,22 @@ export class LandingPage extends Component {
         this.closeSnackbar = this.closeSnackbar.bind(this)
     }
     componentDidMount(){
+        if(Notification.permission === 'default'){
+            Notification.requestPermission()
+            .then((permission)=>{
+                if(permission === 'granted'){
+                    Notification.Notification('Accepted Notification')
+                }
+            })
+        }else if(Notification.permission === 'denied'){
+            Notification.requestPermission()
+            .then((permission)=>{
+                if(permission === 'granted'){
+                    Notification.Notification('Accepted Notification')
+                }
+            })
+        }
+        console.log(Notification.permission)
         this.props.getChatbotDetails()
     }
     componentDidUpdate(){
